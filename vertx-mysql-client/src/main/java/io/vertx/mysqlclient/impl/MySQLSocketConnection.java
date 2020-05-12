@@ -48,7 +48,7 @@ public class MySQLSocketConnection extends SocketConnectionBase {
                                int preparedStatementCacheSize,
                                int preparedStatementCacheSqlLimit,
                                ContextInternal context) {
-    super(socket, cachePreparedStatements, preparedStatementCacheSize, preparedStatementCacheSqlLimit, 1, context);
+    super(socket, cachePreparedStatements, preparedStatementCacheSize, preparedStatementCacheSqlLimit, 1, null, context);
   }
 
   void sendStartupMessage(String username,

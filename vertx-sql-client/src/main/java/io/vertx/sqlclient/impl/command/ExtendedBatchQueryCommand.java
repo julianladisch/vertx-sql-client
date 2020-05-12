@@ -30,21 +30,21 @@ public class ExtendedBatchQueryCommand<T> extends ExtendedQueryCommandBase<T> {
   private final List<Tuple> params;
 
   public ExtendedBatchQueryCommand(PreparedStatement ps,
-                            List<Tuple> params,
-                            boolean autoCommit,
-                            Collector<Row, ?, T> collector,
-                            QueryResultHandler<T> resultHandler) {
+                                   List<Tuple> params,
+                                   boolean autoCommit,
+                                   Collector<Row, ?, T> collector,
+                                   QueryResultHandler<T> resultHandler) {
     this(ps, params, 0, null, false, autoCommit, collector, resultHandler);
   }
 
-  private ExtendedBatchQueryCommand(PreparedStatement ps,
-                            List<Tuple> params,
-                            int fetch,
-                            String cursorId,
-                            boolean suspended,
-                            boolean autoCommit,
-                            Collector<Row, ?, T> collector,
-                            QueryResultHandler<T> resultHandler) {
+  public ExtendedBatchQueryCommand(PreparedStatement ps,
+                                    List<Tuple> params,
+                                    int fetch,
+                                    String cursorId,
+                                    boolean suspended,
+                                    boolean autoCommit,
+                                    Collector<Row, ?, T> collector,
+                                    QueryResultHandler<T> resultHandler) {
     super(ps, fetch, cursorId, suspended, autoCommit, collector, resultHandler);
     this.params = params;
   }

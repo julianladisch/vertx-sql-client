@@ -38,14 +38,14 @@ abstract class QueryCommandBaseCodec<T, C extends QueryCommandBase<T>> extends C
     	sb.append(Integer.toHexString(hashCode()));
         sb.append(" sql=" + cmd.sql());
         if (!isQuery)
-          sb.append(", autoCommit=" + cmd.autoCommit());
+          sb.append(", autoCommit=" + cmd.isAutoCommit());
         return sb.toString();
     }
-    
+
     @Override
     void encode(DB2Encoder encoder) {
         super.encode(encoder);
-        
+
         ByteBuf packet = allocateBuffer();
         int packetStartIdx = packet.writerIndex();
         DRDAQueryRequest req = new DRDAQueryRequest(packet, encoder.connMetadata);
@@ -55,14 +55,14 @@ abstract class QueryCommandBaseCodec<T, C extends QueryCommandBase<T>> extends C
         	encodeUpdate(req);
         }
         req.completeCommand();
-        
+
         sendPacket(packet, packet.writerIndex() - packetStartIdx);
     }
-    
+
     abstract void encodeQuery(DRDAQueryRequest req);
-    
+
     abstract void encodeUpdate(DRDAQueryRequest req);
-    
+
     @Override
     void decodePayload(ByteBuf payload, int payloadLength) {
         if (isQuery) {
@@ -71,11 +71,11 @@ abstract class QueryCommandBaseCodec<T, C extends QueryCommandBase<T>> extends C
             decodeUpdate(payload);
         }
     }
-    
+
     abstract void decodeQuery(ByteBuf payload);
-    
+
     abstract void decodeUpdate(ByteBuf payload);
-    
+
     void handleQueryResult(RowResultDecoder<?, T> decoder) {
         Throwable failure = decoder.complete();
         T result = decoder.result();
@@ -85,5 +85,5 @@ abstract class QueryCommandBaseCodec<T, C extends QueryCommandBase<T>> extends C
         decoder.reset();
         cmd.resultHandler().handleResult(updatedCount, size, rowDesc, result, failure);
     }
-    
+
 }

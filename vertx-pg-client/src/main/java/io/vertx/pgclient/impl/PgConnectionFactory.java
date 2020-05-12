@@ -26,6 +26,7 @@ import io.vertx.core.*;
 import io.vertx.core.net.impl.NetSocketInternal;
 import io.vertx.core.net.*;
 import io.vertx.sqlclient.impl.ConnectionFactory;
+import io.vertx.sqlclient.impl.tracing.TracingManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,6 +52,7 @@ class PgConnectionFactory implements ConnectionFactory {
   private final int preparedStatementCacheSqlLimit;
   private final int pipeliningLimit;
   private final boolean isUsingDomainSocket;
+  private final TracingManager tracingManager;
 
   PgConnectionFactory(VertxInternal vertx, ContextInternal context, PgConnectOptions options) {
 
@@ -75,6 +77,7 @@ class PgConnectionFactory implements ConnectionFactory {
     this.preparedStatementCacheSqlLimit = options.getPreparedStatementCacheSqlLimit();
     this.isUsingDomainSocket = options.isUsingDomainSocket();
     this.client = vertx.createNetClient(netClientOptions);
+    this.tracingManager = context.tracer() != null ? new TracingManager(context.tracer(), options) : null;
   }
 
   void close() {
@@ -166,6 +169,6 @@ class PgConnectionFactory implements ConnectionFactory {
   }
 
   private PgSocketConnection newSocketConnection(NetSocketInternal socket) {
-    return new PgSocketConnection(socket, cachePreparedStatements, preparedStatementCacheSize, preparedStatementCacheSqlLimit, pipeliningLimit, context);
+    return new PgSocketConnection(socket, cachePreparedStatements, preparedStatementCacheSize, preparedStatementCacheSqlLimit, pipeliningLimit, tracingManager, context);
   }
 }

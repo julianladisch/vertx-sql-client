@@ -34,6 +34,7 @@ import io.vertx.core.net.impl.NetSocketInternal;
 import io.vertx.sqlclient.impl.command.QueryCommandBase;
 import io.vertx.sqlclient.impl.command.SimpleQueryCommand;
 import io.vertx.sqlclient.impl.command.TxCommand;
+import io.vertx.sqlclient.impl.tracing.TracingManager;
 
 import java.util.Map;
 
@@ -51,8 +52,16 @@ public class PgSocketConnection extends SocketConnectionBase {
                             int preparedStatementCacheSize,
                             int preparedStatementCacheSqlLimit,
                             int pipeliningLimit,
+                            TracingManager tracingManager,
                             ContextInternal context) {
-    super(socket, cachePreparedStatements, preparedStatementCacheSize, preparedStatementCacheSqlLimit, pipeliningLimit, context);
+    super(
+      socket,
+      cachePreparedStatements,
+      preparedStatementCacheSize,
+      preparedStatementCacheSqlLimit,
+      pipeliningLimit,
+      tracingManager,
+      context);
   }
 
   @Override

@@ -46,7 +46,7 @@ public class DB2SocketConnection extends SocketConnectionBase {
             int preparedStatementCacheSqlLimit,
             int pipeliningLimit,
             ContextInternal context) {
-        super(socket, cachePreparedStatements, preparedStatementCacheSize, preparedStatementCacheSqlLimit, pipeliningLimit, context);
+        super(socket, cachePreparedStatements, preparedStatementCacheSize, preparedStatementCacheSqlLimit, pipeliningLimit, null, context);
     }
 
     void sendStartupMessage(String username,

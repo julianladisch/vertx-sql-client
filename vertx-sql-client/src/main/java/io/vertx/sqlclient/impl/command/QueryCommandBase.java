@@ -17,8 +17,10 @@
 
 package io.vertx.sqlclient.impl.command;
 
+import io.vertx.sqlclient.PropertyKind;
 import io.vertx.sqlclient.Row;
 import io.vertx.sqlclient.impl.QueryResultHandler;
+import io.vertx.sqlclient.impl.RowDesc;
 
 import java.util.function.Function;
 import java.util.stream.Collector;
@@ -31,9 +33,9 @@ public abstract class QueryCommandBase<T> extends CommandBase<Boolean> {
 
   public static final Collector<Row, Void, Void> NULL_COLLECTOR = Collector.of(() -> null, (v,row) -> {}, (v1, v2) -> null, Function.identity());
 
-  private final QueryResultHandler<T> resultHandler;
-  private final Collector<Row, ?, T> collector;
-  private final boolean autoCommit;
+  protected final QueryResultHandler<T> resultHandler;
+  protected final Collector<Row, ?, T> collector;
+  protected final boolean autoCommit;
 
   QueryCommandBase(boolean autoCommit, Collector<Row, ?, T> collector, QueryResultHandler<T> resultHandler) {
     this.autoCommit = autoCommit;
@@ -41,11 +43,28 @@ public abstract class QueryCommandBase<T> extends CommandBase<Boolean> {
     this.collector = collector;
   }
 
+  protected QueryCommandBase(QueryCommandBase<T> that, QueryResultHandler<T> resultHandler) {
+    this.autoCommit = that.autoCommit;
+    this.collector = that.collector;
+    this.resultHandler = new QueryResultHandler<T>() {
+      @Override
+      public <V> void addProperty(PropertyKind<V> property, V value) {
+        resultHandler.addProperty(property, value);
+        that.resultHandler.addProperty(property, value);
+      }
+      @Override
+      public void handleResult(int updatedCount, int size, RowDesc desc, T result, Throwable failure) {
+        resultHandler.handleResult(updatedCount, size, desc, result, failure);
+        that.resultHandler.handleResult(updatedCount, size, desc, result, failure);
+      }
+    };
+  }
+
   public QueryResultHandler<T> resultHandler() {
     return resultHandler;
   }
-  
-  public boolean autoCommit() {
+
+  public boolean isAutoCommit() {
     return autoCommit;
   }
 

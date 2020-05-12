@@ -34,7 +34,7 @@ class MSSQLSocketConnection extends SocketConnectionBase {
                         int preparedStatementCacheSqlLimit,
                         int pipeliningLimit,
                         ContextInternal context) {
-    super(socket, cachePreparedStatements, preparedStatementCacheSize, preparedStatementCacheSqlLimit, pipeliningLimit, context);
+    super(socket, cachePreparedStatements, preparedStatementCacheSize, preparedStatementCacheSqlLimit, pipeliningLimit, null, context);
   }
 
   // command response should show what capabilities server provides

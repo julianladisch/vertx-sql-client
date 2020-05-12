@@ -29,21 +29,21 @@ public class ExtendedQueryCommand<T> extends ExtendedQueryCommandBase<T> {
   private final Tuple params;
 
   public ExtendedQueryCommand(PreparedStatement ps,
-                       Tuple params,
-                       boolean autoCommit,
-                       Collector<Row, ?, T> collector,
-                       QueryResultHandler<T> resultHandler) {
+                              Tuple params,
+                              boolean autoCommit,
+                              Collector<Row, ?, T> collector,
+                              QueryResultHandler<T> resultHandler) {
     this(ps, params, 0, null, false, autoCommit, collector, resultHandler);
   }
 
   public ExtendedQueryCommand(PreparedStatement ps,
-                       Tuple params,
-                       int fetch,
-                       String cursorId,
-                       boolean suspended,
-                       boolean autoCommit,
-                       Collector<Row, ?, T> collector,
-                       QueryResultHandler<T> resultHandler) {
+                              Tuple params,
+                              int fetch,
+                              String cursorId,
+                              boolean suspended,
+                              boolean autoCommit,
+                              Collector<Row, ?, T> collector,
+                              QueryResultHandler<T> resultHandler) {
     super(ps, fetch, cursorId, suspended, autoCommit, collector, resultHandler);
     this.params = params;
   }
@@ -51,5 +51,5 @@ public class ExtendedQueryCommand<T> extends ExtendedQueryCommandBase<T> {
   public Tuple params() {
     return params;
   }
-  
+
 }

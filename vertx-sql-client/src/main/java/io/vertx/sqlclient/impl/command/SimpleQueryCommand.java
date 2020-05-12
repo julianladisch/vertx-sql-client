@@ -44,10 +44,9 @@ public class SimpleQueryCommand<T> extends QueryCommandBase<T> {
   public boolean isSingleton() {
     return singleton;
   }
-  
+
   @Override
   public String sql() {
     return sql;
   }
-
 }

@@ -31,6 +31,7 @@ import io.vertx.core.net.impl.NetSocketInternal;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.sqlclient.impl.command.*;
+import io.vertx.sqlclient.impl.tracing.TracingManager;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -49,6 +50,7 @@ public abstract class SocketConnectionBase implements Connection {
   }
 
   protected final PreparedStatementCache psCache;
+  private final TracingManager tracingManager;
   private final int preparedStatementCacheSqlLimit;
   private final ArrayDeque<CommandBase<?>> pending = new ArrayDeque<>();
   private final ContextInternal context;
@@ -64,9 +66,11 @@ public abstract class SocketConnectionBase implements Connection {
                               int preparedStatementCacheSize,
                               int preparedStatementCacheSqlLimit,
                               int pipeliningLimit,
+                              TracingManager tracingManager,
                               ContextInternal context) {
     this.socket = socket;
     this.context = context;
+    this.tracingManager = tracingManager;
     this.pipeliningLimit = pipeliningLimit;
     this.psCache = cachePreparedStatements ? new PreparedStatementCache(preparedStatementCacheSize, this) : null;
     this.preparedStatementCacheSqlLimit = preparedStatementCacheSqlLimit;
@@ -191,6 +195,11 @@ public abstract class SocketConnectionBase implements Connection {
 
     //
     cmd.handler = handler;
+
+    // Tracing
+    if (tracingManager != null) {
+      cmd = tracingManager.wrap(this.context, cmd);
+    }
 
     //
     if (status == Status.CONNECTED) {

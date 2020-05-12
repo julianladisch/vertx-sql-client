@@ -62,7 +62,7 @@ public abstract class ExtendedQueryCommandBase<R> extends QueryCommandBase<R> {
   public boolean isSuspended() {
     return suspended;
   }
-  
+
   @Override
   public String sql() {
     return ps.sql();

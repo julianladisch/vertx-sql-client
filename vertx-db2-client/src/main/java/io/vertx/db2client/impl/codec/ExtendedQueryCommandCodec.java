@@ -23,23 +23,23 @@ import io.vertx.sqlclient.impl.command.CommandResponse;
 import io.vertx.sqlclient.impl.command.ExtendedQueryCommand;
 
 class ExtendedQueryCommandCodec<R> extends ExtendedQueryCommandBaseCodec<R, ExtendedQueryCommand<R>> {
-  
+
     final QueryInstance queryInstance;
-	
+
     ExtendedQueryCommandCodec(ExtendedQueryCommand<R> cmd) {
         super(cmd);
         queryInstance = statement.getQueryInstance(cmd.cursorId());
     }
-    
+
     @Override
     void encodeQuery(DRDAQueryRequest req) {
     	encodePreparedQuery(req, queryInstance, cmd.params());
     }
-    
+
     @Override
     void encodeUpdate(DRDAQueryRequest req) {
     	encodePreparedUpdate(req, cmd.params());
-    	if (cmd.autoCommit()) {
+    	if (cmd.isAutoCommit()) {
       	  req.buildRDBCMM();
       	}
     }
@@ -51,16 +51,16 @@ class ExtendedQueryCommandCodec<R> extends ExtendedQueryCommandBaseCodec<R, Exte
         handleQueryResult(decoder);
         completionHandler.handle(CommandResponse.success(hasMoreResults));
     }
-    
+
     void decodeUpdate(ByteBuf payload) {
         DRDAQueryResponse updateResponse = new DRDAQueryResponse(payload, encoder.connMetadata);
         handleUpdateResult(updateResponse);
-        if (cmd.autoCommit()) {
+        if (cmd.isAutoCommit()) {
           updateResponse.readLocalCommit();
         }
         completionHandler.handle(CommandResponse.success(true));
     }
-    
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder(super.toString());

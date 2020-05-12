@@ -47,7 +47,7 @@ class SimpleQueryCommandCodec<T> extends QueryCommandBaseCodec<T, SimpleQueryCom
 	void encodeUpdate(DRDAQueryRequest updateCommand) {
 		querySection = encoder.connMetadata.sectionManager.getSection(cmd.sql());
 		updateCommand.writeExecuteImmediate(cmd.sql(), querySection, encoder.connMetadata.databaseName);
-		if (cmd.autoCommit()) {
+		if (cmd.isAutoCommit()) {
 			updateCommand.buildRDBCMM();
 		}
 
@@ -68,7 +68,7 @@ class SimpleQueryCommandCodec<T> extends QueryCommandBaseCodec<T, SimpleQueryCom
 		T result = emptyResult(cmd.collector());
 		cmd.resultHandler().handleResult(updatedCount, 0, null, result, null);
 
-		if (cmd.autoCommit()) {
+		if (cmd.isAutoCommit()) {
 			updateResponse.readLocalCommit();
 		}
 		completionHandler.handle(CommandResponse.success(true));
@@ -80,7 +80,7 @@ class SimpleQueryCommandCodec<T> extends QueryCommandBaseCodec<T, SimpleQueryCom
 
 	void decodeQuery(ByteBuf payload) {
 		querySection.release();
-		
+
 		DRDAQueryResponse resp = new DRDAQueryResponse(payload, encoder.connMetadata);
 		resp.readPrepareDescribeOutput();
 		resp.readBeginOpenQuery();
@@ -99,7 +99,7 @@ class SimpleQueryCommandCodec<T> extends QueryCommandBaseCodec<T, SimpleQueryCom
 		handleQueryResult(decoder);
 		completionHandler.handle(CommandResponse.success(true));
 	}
-	
+
 	@Override
 	public String toString() {
 	  return super.toString() + ", section=" + querySection;

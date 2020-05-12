@@ -31,7 +31,7 @@ import io.vertx.sqlclient.impl.command.CommandResponse;
 import io.vertx.sqlclient.impl.command.ExtendedBatchQueryCommand;
 
 class ExtendedBatchQueryCommandCodec<R> extends ExtendedQueryCommandBaseCodec<R, ExtendedBatchQueryCommand<R>> {
-  
+
   private static final Logger LOG = LoggerFactory.getLogger(ExtendedBatchQueryCommandCodec.class);
 
   private final List<Tuple> params;
@@ -51,10 +51,10 @@ class ExtendedBatchQueryCommandCodec<R> extends ExtendedQueryCommandBaseCodec<R,
       completionHandler.handle(CommandResponse.failure("Can not execute batch query with 0 sets of batch parameters."));
       return;
     }
-    
+
     super.encode(encoder);
   }
-  
+
 	@Override
 	void encodeQuery(DRDAQueryRequest req) {
 		for (int i = 0; i < params.size(); i++) {
@@ -70,11 +70,11 @@ class ExtendedBatchQueryCommandCodec<R> extends ExtendedQueryCommandBaseCodec<R,
 		for (Tuple params : this.params) {
 			encodePreparedUpdate(req, params);
 		}
-	    if (cmd.autoCommit()) {
+	    if (cmd.isAutoCommit()) {
 	        req.buildRDBCMM();
 	    }
 	}
-  
+
   void decodeQuery(ByteBuf payload) {
       boolean hasMoreResults = true;
       DRDAQueryResponse resp = new DRDAQueryResponse(payload, encoder.connMetadata);
@@ -89,18 +89,18 @@ class ExtendedBatchQueryCommandCodec<R> extends ExtendedQueryCommandBaseCodec<R,
       }
       completionHandler.handle(CommandResponse.success(hasMoreResults));
   }
-  
+
   void decodeUpdate(ByteBuf payload) {
       DRDAQueryResponse updateResponse = new DRDAQueryResponse(payload, encoder.connMetadata);
       for (int i = 0; i < params.size(); i++) {
     	  handleUpdateResult(updateResponse);
       }
-      if (cmd.autoCommit()) {
+      if (cmd.isAutoCommit()) {
         updateResponse.readLocalCommit();
       }
       completionHandler.handle(CommandResponse.success(true));
   }
-  
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder(super.toString());
