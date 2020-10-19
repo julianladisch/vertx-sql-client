@@ -12,9 +12,9 @@
 
   <artifactId>vertx-mssql-client</artifactId>
 
-  <name>Vertx MSSQL Client</name>
-  <url>https://github.com/eclipse-vertx/vertx-sql-client</url>
-  <description>The Reactive MSSQL Client</description>
+  <name>Vertx MSSQL Client, FOLIO fork</name>
+  <url>https://github.com/folio-org/vertx-sql-client</url>
+  <description>The Reactive MSSQL Client, FOLIO fork</description>
 
   <properties>
     <doc.skip>false</doc.skip>
