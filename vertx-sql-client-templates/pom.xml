@@ -27,9 +27,9 @@
 
   <artifactId>vertx-sql-client-templates</artifactId>
 
-  <name>Vertx SQL Client Templates</name>
-  <url>https://github.com/eclipse-vertx/vertx-sql-client</url>
-  <description>Vert.x SQL Client Templates</description>
+  <name>Vertx SQL Client Templates, FOLIO fork</name>
+  <url>https://github.com/folio-org/vertx-sql-client</url>
+  <description>Vert.x SQL Client Templates, FOLIO fork</description>
 
   <properties>
     <doc.skip>false</doc.skip>

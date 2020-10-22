@@ -28,9 +28,9 @@
   <version>4.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>Vertx SQL Client parent</name>
-  <url>https://github.com/eclipse-vertx/vertx-sql-client</url>
-  <description>The Reactive SQL Client parent</description>
+  <name>Vertx SQL Client parent, FOLIO fork</name>
+  <url>https://github.com/folio-org/vertx-sql-client</url>
+  <description>The Reactive SQL Client parent, FOLIO fork</description>
 
   <licenses>
     <license>
@@ -41,9 +41,9 @@
   </licenses>
 
   <scm>
-    <connection>scm:git:git@github.com:eclipse-vertx/vertx-sql-client.git</connection>
-    <developerConnection>scm:git:git@github.com:eclipse-vertx/vertx-sql-client.git</developerConnection>
-    <url>git@github.com:eclipse-vertx/vertx-sql-client.git</url>
+    <connection>scm:git:git@github.com:folio-org/vertx-sql-client.git</connection>
+    <developerConnection>scm:git:git@github.com:folio-org/vertx-sql-client.git</developerConnection>
+    <url>git@github.com:folio-org/vertx-sql-client.git</url>
   </scm>
 
   <properties>
@@ -105,10 +105,29 @@
   <modules>
     <module>vertx-sql-client</module>
     <module>vertx-pg-client</module>
+<!-- not needed for FOLIO:
     <module>vertx-mysql-client</module>
     <module>vertx-mssql-client</module>
     <module>vertx-db2-client</module>
     <module>vertx-sql-client-templates</module>
+-->
   </modules>
+
+  <distributionManagement>
+    <repository>
+      <id>folio-nexus</id>
+      <name>FOLIO Release Repository</name>
+      <url>https://repository.folio.org/repository/maven-releases/</url>
+      <uniqueVersion>false</uniqueVersion>
+      <layout>default</layout>
+    </repository>
+    <snapshotRepository>
+      <id>folio-nexus</id>
+      <name>FOLIO Snapshot Repository</name>
+      <uniqueVersion>true</uniqueVersion>
+      <url>https://repository.folio.org/repository/maven-snapshots/</url>
+      <layout>default</layout>
+    </snapshotRepository>
+  </distributionManagement>
 
 </project>
