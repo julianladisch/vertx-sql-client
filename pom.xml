@@ -48,14 +48,15 @@
 
   <properties>
     <stack.version>4.0.0-SNAPSHOT</stack.version>
+    <gpg.skip>true</gpg.skip> <!-- FOLIO doesn't sign -->
     <doc.skip>true</doc.skip>
     <jmh.version>1.19</jmh.version>
     <docs.dir>${project.basedir}/src/main/docs</docs.dir>
     <generated.dir>${project.basedir}/src/main/generated</generated.dir>
-    <connection.uri/>
-    <tls.connection.uri/>
-    <unix.socket.directory/>
-    <unix.socket.port/>
+    <connection.uri />
+    <tls.connection.uri />
+    <unix.socket.directory />
+    <unix.socket.port />
     <jar.manifest>${project.basedir}/src/main/resources/META-INF/MANIFEST.MF</jar.manifest>
     <!-- We skip sources jar generation as we do it with the assembly plugin to have greater control over the content -->
     <source.skip>true</source.skip>
