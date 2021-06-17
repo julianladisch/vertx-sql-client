@@ -13,6 +13,8 @@ jobs:
       fail-fast: false
     runs-on: ${{ matrix.os }}
     steps:
+      - name: Docker
+        uses: actions/setup-docker@v1
       - name: Checkout
         uses: actions/checkout@v2
       - name: Install JDK
