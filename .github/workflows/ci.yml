@@ -13,10 +13,6 @@ jobs:
       fail-fast: false
     runs-on: ${{ matrix.os }}
     steps:
-      - name: Docker
-        uses: docker-practice/actions-setup-docker@v1
-        with:
-          docker_buildx: false
       - name: Checkout
         uses: actions/checkout@v2
       - name: Install JDK
@@ -24,4 +20,6 @@ jobs:
         with:
           java-version: ${{ matrix.jdk }}
       - name: Run tests
-        run: mvn -q clean verify -B -DskipDefault -Dtest=PreparedStatementTest,UnixDomainSocketTest -P ${{ matrix.profile }}
+        run: mvn -q clean verify -DskipDefault -Dtest=PreparedStatementTest,UnixDomainSocketTest -P ${{ matrix.profile }}
+      - name: tmate
+        uses: mxschmitt/action-tmate@v3
